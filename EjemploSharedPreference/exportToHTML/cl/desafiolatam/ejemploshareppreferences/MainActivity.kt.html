@@ -1,0 +1,115 @@
+<html>
+<head>
+<title>MainActivity.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #ed864a;}
+.s1 { color: #ebebeb;}
+.s2 { color: #54b33e;}
+.s3 { color: #ed864a; font-weight: bold;}
+.s4 { color: #33ccff; font-weight: bold;}
+</style>
+</head>
+<body bgcolor="#131314">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">cl.desafiolatam.ejemploshareppreferences</span>
+
+<span class="s1">import android.content.Context</span>
+<span class="s1">import android.content.SharedPreferences</span>
+<span class="s1">import androidx.appcompat.app.AppCompatActivity</span>
+<span class="s1">import android.os.Bundle</span>
+<span class="s1">import android.view.View</span>
+<span class="s1">import android.widget.Button</span>
+<span class="s1">import android.widget.EditText</span>
+<span class="s1">import android.widget.Switch</span>
+<span class="s1">import android.widget.TextView</span>
+
+<span class="s0">class </span><span class="s1">MainActivity : AppCompatActivity() {</span>
+    <span class="s1">companion </span><span class="s0">object </span><span class="s1">{</span>
+        <span class="s1">private const </span><span class="s0">val </span><span class="s1">baseClave = </span><span class="s2">&quot;EjemploSP&quot;</span>
+        <span class="s1">const </span><span class="s0">val </span><span class="s1">claveNumEnt = baseClave + </span><span class="s2">&quot;NumEnt&quot;</span>
+        <span class="s1">const </span><span class="s0">val </span><span class="s1">claveTexto = baseClave + </span><span class="s2">&quot;Texto&quot;</span>
+        <span class="s1">const </span><span class="s0">val </span><span class="s1">claveSwitch = baseClave + </span><span class="s2">&quot;Switch&quot;</span>
+        <span class="s1">const </span><span class="s0">val </span><span class="s1">claveNumDec = baseClave + </span><span class="s2">&quot;NumDec&quot;</span>
+    <span class="s1">}</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">sharedPreferences: SharedPreferences</span>
+
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">numEntInput: EditText</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">numEntValue:TextView</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">textoInput:EditText</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">textoValue: TextView</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">switch: Switch</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">numDecInput:EditText</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">numDecValue:TextView</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">borrar: Button</span>
+    <span class="s1">lateinit </span><span class="s0">var </span><span class="s1">guardar:Button</span>
+
+    <span class="s1">override </span><span class="s0">fun </span><span class="s1">onCreate(savedInstanceState: Bundle?) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span>
+        <span class="s0">val </span><span class="s1">fileName = </span><span class="s2">&quot;cl.desafiolatam.ejemplosharedpreferences&quot;</span>
+        <span class="s1">sharedPreferences = getSharedPreferences(fileName</span><span class="s3">, </span><span class="s1">Context.MODE_PRIVATE)</span>
+        <span class="s1">initViews()</span>
+        <span class="s1">leerDesdeSharedPreferences()</span>
+    <span class="s1">}</span>
+    <span class="s1">private </span><span class="s0">fun </span><span class="s1">initViews() {</span>
+        <span class="s1">numEntInput = findViewById(R.id.numero_input)</span>
+        <span class="s1">numEntValue = findViewById(R.id.num_ent_valor)</span>
+        <span class="s1">textoInput = findViewById(R.id.texto_input)</span>
+        <span class="s1">textoValue = findViewById(R.id.text_valor)</span>
+        <span class="s1">switch = findViewById(R.id.switch_input)</span>
+        <span class="s1">numDecInput = findViewById(R.id.num_dec_input)</span>
+        <span class="s1">numDecValue = findViewById(R.id.num_dec_valor)</span>
+        <span class="s1">borrar = findViewById(R.id.borrar)</span>
+        <span class="s1">guardar = findViewById(R.id.guardar)</span>
+
+        <span class="s1">borrar.setOnClickListener(</span><span class="s0">object</span><span class="s1">: View.OnClickListener {</span>
+            <span class="s1">override </span><span class="s0">fun </span><span class="s1">onClick(p0: View?) {</span>
+                <span class="s1">borrar()</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span>
+        <span class="s1">guardar.setOnClickListener(</span><span class="s0">object</span><span class="s1">: View.OnClickListener {</span>
+            <span class="s1">override </span><span class="s0">fun </span><span class="s1">onClick(p0: View?) {</span>
+                <span class="s1">guardar()</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span>
+    <span class="s1">}</span>
+    <span class="s1">private </span><span class="s0">fun </span><span class="s1">leerDesdeSharedPreferences() {</span>
+        <span class="s1">numEntValue.text = sharedPreferences.getInt(claveNumEnt</span><span class="s3">, </span><span class="s4">0</span><span class="s1">).toString()</span>
+        <span class="s1">textoValue.text = sharedPreferences.getString(claveTexto</span><span class="s3">, </span><span class="s2">&quot;&quot;</span><span class="s1">)</span>
+        <span class="s0">val </span><span class="s1">checked = sharedPreferences.getBoolean(claveSwitch</span><span class="s3">, </span><span class="s0">false</span><span class="s1">)</span>
+        <span class="s1">switch.isChecked = checked</span>
+        <span class="s1">switch.isSelected = checked</span>
+        <span class="s1">numDecValue.text = sharedPreferences.getFloat(claveNumDec</span><span class="s3">,</span><span class="s4">0.0f</span><span class="s1">).toString()</span>
+    <span class="s1">}</span>
+    <span class="s1">private </span><span class="s0">fun </span><span class="s1">guardar() {</span>
+        <span class="s0">if </span><span class="s1">(numEntInput.text!!.isNotEmpty()) {</span>
+            <span class="s0">val </span><span class="s1">numEnt = numEntInput.text.toString().toInt()</span>
+            <span class="s1">sharedPreferences.edit().putInt(claveNumEnt</span><span class="s3">, </span><span class="s1">numEnt).apply()</span>
+        <span class="s1">}</span>
+        <span class="s0">if </span><span class="s1">(textoInput.text!!.isNotEmpty()) {</span>
+            <span class="s1">sharedPreferences.edit()</span>
+                <span class="s1">.putString(claveTexto</span><span class="s3">, </span><span class="s1">textoInput.text.toString())</span>
+                <span class="s1">.apply()</span>
+        <span class="s1">}</span>
+        <span class="s0">val </span><span class="s1">checked = switch.isChecked</span>
+        <span class="s1">sharedPreferences.edit().putBoolean(claveSwitch</span><span class="s3">, </span><span class="s1">checked).apply()</span>
+        <span class="s0">if </span><span class="s1">(numDecInput.text!!.isNotEmpty()) {</span>
+            <span class="s0">val </span><span class="s1">numDec = numDecInput.text.toString().toFloat()</span>
+            <span class="s1">sharedPreferences.edit().putFloat(claveNumDec</span><span class="s3">, </span><span class="s1">numDec).apply()</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s1">private </span><span class="s0">fun </span><span class="s1">borrar() {</span>
+        <span class="s1">sharedPreferences.edit().remove(claveNumEnt).apply()</span>
+        <span class="s1">sharedPreferences.edit().remove(claveTexto).apply()</span>
+        <span class="s1">sharedPreferences.edit().remove(claveSwitch).apply()</span>
+        <span class="s1">sharedPreferences.edit().remove(claveNumDec).apply()</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>
